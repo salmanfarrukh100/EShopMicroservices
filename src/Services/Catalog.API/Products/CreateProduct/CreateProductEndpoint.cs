@@ -5,7 +5,7 @@
      List<string> Category,
      string Description,
      string ImageFile,
-     decimal price);
+     decimal Price);
     public record CreateProductResponse(Guid Id);
 
     public class CreateProductEndpoint : ICarterModule
