@@ -12,6 +12,18 @@ namespace Catalog.API.Products.UpdateProduct
     string ImageFile,
     decimal Price) : ICommand<UpdateProductResult>;
     public record UpdateProductResult(Guid Id);
+
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    {
+        public UpdateProductCommandValidator()
+        {
+            RuleFor(x=>x.Id).NotEmpty().WithMessage("Product ID is required");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
+            RuleFor(x => x.Category).NotEmpty().WithMessage("Category is required");
+            RuleFor(x => x.ImageFile).NotEmpty().WithMessage("File is required");
+            RuleFor(x => x.Price).GreaterThan(0).WithMessage("Price must be greater than 0");
+        }
+    }
     public class UpdateProductRequestHandler(IDocumentSession session, ILogger<GetProductByCategoryQueryHandler> logger)
                                             : IRequestHandler<UpdateProductCommand, UpdateProductResult>
     {

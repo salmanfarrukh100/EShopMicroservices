@@ -1,15 +1,26 @@
+using Common.Behaviours;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCarter();
+
+var assembly = typeof(Program).Assembly;
+
 builder.Services.AddMediatR(Config=> 
 {
-    Config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    Config.RegisterServicesFromAssembly(assembly);
+    Config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
 });
+
+builder.Services.AddValidatorsFromAssembly(assembly);
+
+builder.Services.AddCarter();
+
 builder.Services.AddMarten(Opts =>
 {
     Opts.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
+
 var app = builder.Build();
 app.MapCarter();
 // Configure the HTTP pipeline

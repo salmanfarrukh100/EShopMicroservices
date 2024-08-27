@@ -9,7 +9,7 @@ namespace Catalog.API.Products.GetProductById
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.Map("/product/{id}", async (Guid id, ISender sender) =>
+            app.MapGet("/product/{id}", async (Guid id, ISender sender) =>
             {
                 var result = await sender.Send(new GetProductByIdQuery(id));
 
